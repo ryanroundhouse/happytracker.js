@@ -103,6 +103,20 @@ describe('happyController Tests', function(){
           expect(res.body.errors.mood.path).equals('mood');
         });
     });
+    
+    it('add a mood should return an error on an invalid mood', function(){
+      let testMood = {
+        name: "Ryan Graham",
+        date: Date.now(),
+        mood: 'super duper'
+      }
+      return chai.request(server)
+        .post('/moods')
+        .send(testMood)
+        .then(function(res){
+          expect(res.body.errors.mood.path).equals('mood');
+        });
+    });
 
     it('add a mood should succeed', function(){
       let testMood = {
@@ -143,5 +157,25 @@ describe('happyController Tests', function(){
             expect(res).to.have.status(404);
           });
         });
+  });
+  
+  describe('update a mood tests', function(){
+    it('should get an empty result on updating a mood entry that doesn\'t exist', function(){
+      return chai.request(server)
+        let testMood = {
+          name: "Ryan Graham",
+          date: Date.now(),
+          mood: 'super duper'
+        }
+        .put('/moods/moodIdThatDoesntExist')
+        .send(testMood)
+        .then(function(res) {
+          expect(res.body.results).to.be.undefined;
+        });
+      });
+
+    it('should successfully update a mood when appropriate', function(){
+      
+    });
   });
 });

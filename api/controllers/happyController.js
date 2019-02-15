@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
   Mood = mongoose.model('Mood');
 
 exports.list_all_moods = function(req, res) {
+    console.log('hit list_all_moods');
     Mood.find({}, function(err, mood) {
     if (err)
       res.send(err);
@@ -35,9 +36,11 @@ exports.read_a_mood = function(req, res) {
 };
 
 exports.update_a_mood = function(req, res) {
+  console.log('hit update_a_mood');
   Mood.findOneAndUpdate({_id: req.params.moodId}, req.body, {new: true}, function(err, mood) {
-    if (err)
+    if (err){
       res.send(err);
+    }
     res.json(mood);
   });
 };
