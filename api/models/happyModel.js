@@ -20,6 +20,10 @@ var MoodSchema = new Schema({
     }],
     default: ['ok'],
     required: 'Specify your mood.'
+  },
+  createdDate: {
+    type: Date,
+    default: Date.now
   }
 });
 

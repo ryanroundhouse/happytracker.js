@@ -22,8 +22,12 @@ exports.create_a_mood = function(req, res) {
 
 exports.read_a_mood = function(req, res) {
   Mood.findById(req.params.moodId, function(err, mood) {
-    if (err)
+    if (mood === undefined){
+      res.status(404);
+    }
+    if (err){
       res.send(err);
+    }
     res.json(mood);
   });
 };
@@ -37,11 +41,17 @@ exports.update_a_mood = function(req, res) {
 };
 
 exports.delete_a_mood = function(req, res) {
-  Mood.remove({
+  Mood.deleteOne({
     _id: req.params.moodId
   }, function(err, mood) {
-    if (err)
+    if (err){
       res.send(err);
-    res.json({ message: 'Mood successfully deleted' });
+    }    
+    if (mood.deletedCount === 0){
+      res.json({message: "No mood found matching that ID."});
+    }
+    else{
+      res.json({ message: 'Mood successfully deleted' });
+    }
   });
 };

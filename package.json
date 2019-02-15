@@ -4,12 +4,15 @@
   "description": "track happiness",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "test": "SET NODE_ENV=test && mocha **/*.Test.js --exit",
+    "start": "SET NODE_ENV=dev && nodemon server.js"
   },
   "author": "Ryan Graham",
   "license": "ISC",
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "mocha": "^5.2.0",
     "nodemon": "^1.18.10"
   },
   "dependencies": {
