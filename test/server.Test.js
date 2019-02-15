@@ -9,8 +9,15 @@ const expect = require('chai').expect;
 chai.use(chaiHttp);
 const server = require('../server.js')
 
-describe('happyController Tests', function(){
+after(function (done) {
+  mongoose.connection.db.dropDatabase(function () {
+    mongoose.connection.close(function () {
+          done();
+      });
+  });
+});
 
+describe('happyController Tests', function(){
   describe('invalid URL tests', function(){
     it('should receive 404 on invalid URI', function(){
         return chai.request(server)
@@ -45,6 +52,71 @@ describe('happyController Tests', function(){
               expect(res).to.be.json;
             });
       });
+  });
+  
+  describe('add a mood tests', function(){
+    it('add a mood should fail when name not supplied', function(){
+      let testMood = {
+      }
+      return chai.request(server)
+        .post('/moods')
+        .send(testMood)
+        .then(function(res){
+          expect(res.body.errors.name.path).equals('name');
+        });
+    });
+
+    it('add a mood should fail when date not supplied', function(){
+      let testMood = {
+        name: "Ryan Graham"
+      }
+      return chai.request(server)
+        .post('/moods')
+        .send(testMood)
+        .then(function(res){
+          expect(res.body.errors.date.path).equals('date');
+        });
+    });
+
+    it('add a mood should fail when a mood not supplied', function(){
+      let testMood = {
+        name: "Ryan Graham",
+        date: Date.now()
+      }
+      return chai.request(server)
+        .post('/moods')
+        .send(testMood)
+        .then(function(res){
+          expect(res.body.errors.mood.path).equals('mood');
+        });
+    });
+
+    it('add a mood should return a 400 on failed add body', function(){
+      let testMood = {
+        name: "Ryan Graham",
+        date: Date.now()
+      }
+      return chai.request(server)
+        .post('/moods')
+        .send(testMood)
+        .then(function(res){
+          expect(res.body.errors.mood.path).equals('mood');
+        });
+    });
+
+    it('add a mood should succeed', function(){
+      let testMood = {
+        name: "Ryan Graham",
+        date: Date.now(),
+        mood: "ok"
+      }
+      return chai.request(server)
+        .post('/moods')
+        .send(testMood)
+        .then(function(res){
+          expect(res).to.have.status(200);
+        });
+    });
   });
     
   describe('get a mood tests', function(){

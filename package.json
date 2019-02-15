@@ -2,7 +2,7 @@
   "name": "happytracker",
   "version": "1.0.0",
   "description": "track happiness",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "SET NODE_ENV=test && mocha **/*.Test.js --exit",
     "start": "SET NODE_ENV=dev && nodemon server.js"

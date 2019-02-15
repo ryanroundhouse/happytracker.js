@@ -6,20 +6,16 @@ var Schema = mongoose.Schema;
 var MoodSchema = new Schema({
   name: {
     type: String,
-    required: 'Enter your name.'
+    required: [true, 'Enter your name.']
   },
   date: {
     type: Date,
-    default: Date.now,
-    required: 'Enter date of mood.'
+    required: [true, 'Enter date of mood.']
   },
   mood: {
-    type: [{
-      type: String,
-      enum: ['bad', 'ok', 'good']
-    }],
-    default: ['ok'],
-    required: 'Specify your mood.'
+    type: String,
+    enum: ['bad', 'ok', 'good'],
+    required: [true, 'Specify your mood.']
   },
   createdDate: {
     type: Date,

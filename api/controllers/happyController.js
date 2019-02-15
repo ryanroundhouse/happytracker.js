@@ -14,8 +14,10 @@ exports.list_all_moods = function(req, res) {
 exports.create_a_mood = function(req, res) {
   var new_mood = new Mood(req.body);
   new_mood.save(function(err, mood) {
-    if (err)
+    if (err){
+      res.status(400);
       res.send(err);
+    }
     res.json(mood);
   });
 };
