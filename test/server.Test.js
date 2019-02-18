@@ -3,8 +3,10 @@
 var mongoose = require('mongoose');
 require("../api/models/happyModel");
 const chai = require('chai');
-const chaiHttp = require('chai-http')
+const chaiHttp = require('chai-http');
 const expect = require('chai').expect;
+var winston = require('../config/winston'); //import logging config
+winston.transports.forEach((t) => (t.silent = true));
 
 chai.use(chaiHttp);
 const server = require('../server.js')
@@ -161,12 +163,12 @@ describe('happyController Tests', function(){
   
   describe('update a mood tests', function(){
     it('should get an empty result on updating a mood entry that doesn\'t exist', function(){
-      return chai.request(server)
         let testMood = {
           name: "Ryan Graham",
           date: Date.now(),
           mood: 'super duper'
         }
+        return chai.request(server)
         .put('/moods/moodIdThatDoesntExist')
         .send(testMood)
         .then(function(res) {
@@ -174,8 +176,5 @@ describe('happyController Tests', function(){
         });
       });
 
-    it('should successfully update a mood when appropriate', function(){
-      
-    });
   });
 });

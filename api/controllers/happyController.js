@@ -1,18 +1,21 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-  Mood = mongoose.model('Mood');
+var mongoose = require('mongoose');
+var Mood = mongoose.model('Mood');
+var Winston = require('../../config/winston') //import logging config
 
-exports.list_all_moods = function(req, res) {
-    console.log('hit list_all_moods');
+exports.ReadAllMoods = function(req, res) {
+    Winston.debug('started ReadAllMoods');
     Mood.find({}, function(err, mood) {
     if (err)
       res.send(err);
     res.json(mood);
   });
+  Winston.debug('completed ReadAllMoods');
 };
 
-exports.create_a_mood = function(req, res) {
+exports.CreateMood = function(req, res) {
+  Winston.debug('started CreateMood');
   var new_mood = new Mood(req.body);
   new_mood.save(function(err, mood) {
     if (err){
@@ -21,9 +24,11 @@ exports.create_a_mood = function(req, res) {
     }
     res.json(mood);
   });
+  Winston.debug('completed CreateMood');
 };
 
-exports.read_a_mood = function(req, res) {
+exports.ReadMood = function(req, res) {
+  Winston.debug('started ReadMood');
   Mood.findById(req.params.moodId, function(err, mood) {
     if (mood === undefined){
       res.status(404);
@@ -33,19 +38,22 @@ exports.read_a_mood = function(req, res) {
     }
     res.json(mood);
   });
+  Winston.debug('completed CreateMood');
 };
 
-exports.update_a_mood = function(req, res) {
-  console.log('hit update_a_mood');
+exports.UpdateMood = function(req, res) {
+  Winston.debug('started UpdateMood');
   Mood.findOneAndUpdate({_id: req.params.moodId}, req.body, {new: true}, function(err, mood) {
     if (err){
       res.send(err);
     }
     res.json(mood);
   });
+  Winston.debug('completed CreateMood');
 };
 
-exports.delete_a_mood = function(req, res) {
+exports.DeleteMood = function(req, res) {
+  Winston.debug('started DeleteMood');
   Mood.deleteOne({
     _id: req.params.moodId
   }, function(err, mood) {
@@ -59,4 +67,5 @@ exports.delete_a_mood = function(req, res) {
       res.json({ message: 'Mood successfully deleted' });
     }
   });
+  Winston.debug('completed CreateMood');
 };

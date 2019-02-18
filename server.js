@@ -7,10 +7,12 @@ var express = require('express'); //import the app
 var mongoose = require('mongoose'); //import the db
 var bodyParser = require('body-parser'); //import the parser
 var Mood = require('./api/models/happyModel'); //created model loading here
+var winston = require('./config/winston') //import logging config
 
+winston.info('Started happyTracker.js')
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-console.log(new Date().toISOString() + ' ' + 'Attempting to connect to db ' + config.dbURI);
+winston.info('Attempting to connect to db ' + config.dbURI);
 mongoose.connect(config.dbURI, { useNewUrlParser: true });
 
 var app = express();
@@ -26,4 +28,4 @@ app.use(function(req, res) {
   res.status(404).send({url: req.originalUrl + ' not found'})
 });
 
-console.log('happyTracker RESTful API server started on: ' + port);
+winston.info('happyTracker RESTful API server started on port: ' + port);
